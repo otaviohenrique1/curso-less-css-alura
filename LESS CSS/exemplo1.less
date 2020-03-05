@@ -1,0 +1,281 @@
+/*Variaveis no LESS -> Uma das principais características
+do Less é a capacidade de criar variáveis ​​como você faria em
+uma linguagem de programação padrão. Eles podem armazenar
+qualquer tipo de valor que você se encontra usando
+frequentemente: cores, dimensões, seletores, nomes de fontes,
+URLs e assim por diante. A filosofia de menos é reutilizar a
+sintaxe CSS sempre que possível.*/
+
+@background-color: #ffffff;
+@text-color: #1A237E;
+
+p{
+    background-color: @background-color;
+    color: @text-color;
+    padding: 15px;
+}
+
+ul{
+    background-color: @background-color;
+}
+
+li{
+    color: @text-color;
+}
+/*No exemplo acima, a cor do plano de fundo é branca,
+enquanto o texto é escuro. Se, digamos, quisermos alterná-las
+e ter elementos escuros com texto branco, podemos simplesmente
+alterar os valores das variáveis, em vez de substituir
+manualmente todas as ocorrências.*/
+/*Resultado no CSS:*/
+/*
+p{
+    background-color: #ffffff;
+    color: #1A237E;
+    padding: 15px;
+}
+
+ul{
+    background-color: #ffffff;
+}
+
+li{
+    color: #1A237E;
+}
+*/
+/*------------------------------------------------------------------*/
+/*------------------------------------------------------------------*/
+
+/*Mixins -> O LESS nos permite usar uma classe ou IDs existente e
+aplicar todos os estilos diretamente a outro seletor.*/
+#circle{
+    background-color: #4CAF50;
+    border-radius: 100%;
+}
+  
+#small-circle{
+    width: 50px;
+    height: 50px;
+    #circle
+}
+  
+#big-circle{
+    width: 100px;
+    height: 100px;
+    #circle
+}
+/*Resultado no CSS:*/
+/*#circle {
+    background-color: #4CAF50;
+    border-radius: 100%;
+}
+#small-circle {
+    width: 50px;
+    height: 50px;
+    background-color: #4CAF50;
+    border-radius: 100%;
+}
+#big-circle {
+    width: 100px;
+    height: 100px;
+    background-color: #4CAF50;
+    border-radius: 100%;
+}*/
+
+/*Se você não quer que o mixin apareça como regra no CSS,
+você pode colocar parênteses depois dele:*/
+#circle(){
+    background-color: #4CAF50;
+    border-radius: 100%;
+}
+  
+#small-circle{
+    width: 50px;
+    height: 50px;
+    #circle
+}
+  
+#big-circle{
+    width: 100px;
+    height: 100px;
+    #circle
+}
+/*Resultado no CSS:*/
+/*#small-circle {
+    width: 50px;
+    height: 50px;
+    background-color: #4CAF50;
+    border-radius: 100%;
+}
+#big-circle {
+    width: 100px;
+    height: 100px;
+    background-color: #4CAF50;
+    border-radius: 100%;
+}*/
+
+/*Outra coisa legal que os mixins podem fazer é receber parâmetros.
+No exemplo a seguir, adicionamos um argumento para a largura e a
+altura de nossos círculos, com um valor padrão de 25 pixels. Isto
+irá criar um pequeno círculo de 25x25 e um grande círculo de
+100x100 pixels.*/
+#circle(@size: 25px){
+    background-color: #4CAF50;
+    border-radius: 100%;
+  
+    width: @size;
+    height: @size;
+}
+  
+#small-circle{
+    #circle
+}
+  
+#big-circle{
+    #circle(100px)
+}
+/*Resultado no CSS:*/
+/*#small-circle {
+    background-color: #4CAF50;
+    border-radius: 100%;
+    width: 25px;
+    height: 25px;
+}
+#big-circle {
+    background-color: #4CAF50;
+    border-radius: 100%;
+    width: 100px;
+    height: 100px;
+}*/
+/*------------------------------------------------------------------*/
+/*------------------------------------------------------------------*/
+
+/*Aninhamento e Escopo -> O aninhamento pode ser usado para
+estruturar sua folha de estilo de maneira que corresponda à
+estrutura HTML da página, reduzindo a chance de conflitos.
+Aqui está um exemplo de uma lista não ordenada e seus filhos:*/
+ul{
+    background-color: #03A9F4;
+    padding: 10px;
+    list-style: none;
+  
+    li{
+        background-color: #fff;
+        border-radius: 3px;
+        margin: 10px 0;
+    }
+}
+/*Resultado no CSS:*/
+/*ul {
+    background-color: #03A9F4;
+    padding: 10px;
+    list-style: none;
+}
+ul li {
+    background-color: #fff;
+    border-radius: 3px;
+    margin: 10px 0;
+}*/
+
+/*Assim como nas linguagens de programação, as variáveis Less
+recebem seus valores dependendo do escopo. Se o valor não estiver
+especificado no escopo específico, o LESS o procurará nos blocos
+superiores até encontrar a declaração mais próxima. Traduzido para
+CSS, nosso li terá texto em branco, já que predefinimos uma
+strong>@text-color nas regras de ul .*/
+@text-color: #000000;
+
+ul{
+    @text-color: #fff;
+    background-color: #03A9F4;
+    padding: 10px;
+    list-style: none;
+
+    li{
+        color: @text-color;
+        border-radius: 3px;
+        margin: 10px 0;
+    }
+}
+/*Resultado no CSS:*/
+/*ul {
+    background-color: #03A9F4;
+    padding: 10px;
+    list-style: none;
+}
+ul li {
+    color: #ffffff;
+    border-radius: 3px;
+    margin: 10px 0;
+}*/
+/*------------------------------------------------------------------*/
+/*------------------------------------------------------------------*/
+
+/*Operações -> Você pode fazer operações matemáticas básicas para
+valores numéricos e cores. Digamos que queremos ter dois divs
+colocados próximos um do outro, o segundo sendo o dobro da largura
+e com um fundo diferente. Menos sabe o que as unidades de medição
+são e não vai estragar tudo.*/
+@div-width: 100px;
+@color: #03A9F4;
+
+div{
+    height: 50px;
+    display: inline-block;
+}
+
+#left{
+    width: @div-width;
+    background-color: @color - 100;
+}
+
+#right{
+    width: @div-width * 2;
+    background-color: @color;
+}
+/*Resultado no CSS:*/
+/*div {
+    height: 50px;
+    display: inline-block;
+}
+#left {
+    width: 100px;
+    background-color: #004590;
+}
+#right {
+    width: 200px;
+    background-color: #03a9f4;
+}*/
+/*------------------------------------------------------------------*/
+/*------------------------------------------------------------------*/
+
+/*Funções -> Menos tem funções também! Está começando a parecer mais
+e mais com uma linguagem de programação, não é? Vamos dar uma olhada
+no fadeout , uma função que diminui a opacidade de uma cor.*/
+@var: #004590;
+
+div{
+    height: 50px;
+    width: 50px;
+    background-color: @var;
+
+    &:hover{
+        background-color: fadeout(@var, 50%)
+    }
+}
+/*Resultado no CSS:*/
+/*div {
+    height: 50px;
+    width: 50px;
+    background-color: #004590;
+}
+div:hover {
+     background-color: rgba(0, 69, 144, 0.5);
+}*/
+/*Com o código acima, quando o nosso div é pairado, ele ficará na
+metade do caminho, tornando o mouse sobre as transições mais fácil
+do que nunca. Há muitas outras funções úteis para manipular cores,
+detectar o tamanho das imagens e até incorporar recursos como
+data-uri na folha de estilo.*/
+/*------------------------------------------------------------------*/
+/*------------------------------------------------------------------*/
